@@ -1,15 +1,15 @@
 fetch('https://cherrybot.arandas.repl.co/status')
     .then(response => response.json())
     .then(data => {
-        const status = data.status || 'Pendente';
+        const status = data.status || '';
         const bodyElement = document.body;
         const statusElement = document.getElementById('status');
         statusElement.textContent = status;
 
-        if (status === 'Pendente') {
+        if (status === '') {
             bodyElement.classList.remove('error', 'success');
             bodyElement.classList.add('pending');
-        } else if (status === 'Operacional') {
+        } else if (status === 'Operacional!') {
             bodyElement.classList.remove('error', 'pending');
             bodyElement.classList.add('success');
         } else {
