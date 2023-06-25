@@ -12,24 +12,12 @@ $(document).ready(function() {
                     bodyElement.removeClass('error success').addClass('pending');
                 } else if (status === 'Operacional!') {
                     bodyElement.removeClass('error pending').addClass('success');
+                    statusElement.text(status); // Atualiza o status diretamente com o valor do JSON
+                    clearInterval(intervaloArray); // Limpa o intervalo de exibição do array
                 } else {
                     bodyElement.removeClass('pending success').addClass('error');
-                }
-
-                if (status === '') {
-                    const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
-                    let currentIndex = 0; // Índice atual do item a ser exibido
-
-                    function exibirProximoItem() {
-                        statusElement.text(array[currentIndex]);
-                        currentIndex = (currentIndex + 1) % array.length;
-                    }
-
-                    const intervalo = 500; // 0,5 segundos
-                    setInterval(exibirProximoItem, intervalo);
-                } else {
-                    // Limpa o intervalo de exibição do array
-                    clearInterval(intervaloArray);
+                    statusElement.text(status); // Atualiza o status diretamente com o valor do JSON
+                    clearInterval(intervaloArray); // Limpa o intervalo de exibição do array
                 }
             },
             error: function(error) {
@@ -41,12 +29,21 @@ $(document).ready(function() {
                 console.error(error);
             }
         });
-    }());
+    })();
 
     const intervaloAtualizacao = 5 * 1000; // 5 segundos
 
     // Define o intervalo de atualização automática
-    (function intervalo() {
-        setInterval(atualizarStatus, intervaloAtualizacao)
-    }());
+    setInterval(atualizarStatus, intervaloAtualizacao);
+
+    const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
+    let currentIndex = 0; // Índice atual do item a ser exibido
+
+    function exibirProximoItem() {
+        const statusElement = $('#status');
+        statusElement.text(array[currentIndex]);
+        currentIndex = (currentIndex + 1) % array.length;
+    };
+
+    const intervaloArray = setInterval(exibirProximoItem, 500); 
 });
