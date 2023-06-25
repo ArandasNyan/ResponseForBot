@@ -37,4 +37,12 @@ $(document).ready(function() {
             }
         });
     }());
+
+    const intervaloAtualizacao = 5 * 1000; // 5 segundos
+
+    // Define a função para atualizar o status em intervalos regulares
+    (function atualizarAutomaticamente() {
+        atualizarStatus();
+        setTimeout(atualizarAutomaticamente, intervaloAtualizacao);
+    }())
 });
