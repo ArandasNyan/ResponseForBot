@@ -1,9 +1,9 @@
-$(document).ready(function() {
+$(document).ready(function () {
     let arrayIndex = 0;
     const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
     let status = '';
 
-    const updateStatus = function() {
+    const updateStatus = function () {
         const bodyElement = $('body');
         const statusElement = $('#status');
 
@@ -11,26 +11,26 @@ $(document).ready(function() {
             bodyElement.removeClass('error success').addClass('pending');
             statusElement.text(array[arrayIndex]);
             arrayIndex = (arrayIndex + 1) % array.length;
-        } else if (status === 'Operacional!') {
-            bodyElement.removeClass('error pending').addClass('success');
-            statusElement.text(status);
+        } else if (status === 'Inoperante') {
+            bodyElement.removeClass('success pending').addClass('error');
+            statusElement.text('Não Operacional!');
             clearInterval(intervaloArray);
         } else {
-            bodyElement.removeClass('pending success').addClass('error');
-            statusElement.text('Não Operacional!');
+            bodyElement.removeClass('pending error').addClass('success');
+            statusElement.text('Operacional!');
             clearInterval(intervaloArray);
         }
     };
 
-    const fetchData = function() {
+    const fetchData = function () {
         $.ajax({
             url: 'https://cherrybot.arandas.repl.co/status',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 status = data.status || '';
                 updateStatus();
             },
-            error: function(error) {
+            error: function (error) {
                 status = '';
                 updateStatus();
                 console.error(error);
@@ -38,9 +38,25 @@ $(document).ready(function() {
         });
     };
 
-    fetchData();
-
     const intervaloAtualizacao = 5 * 1000; // 5 segundos
 
     const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
+
+    const connectToServerEvents = function () {
+        const eventSource = new EventSource('/status-stream');
+
+        eventSource.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            const newStatus = data.status || '';
+            status = newStatus;
+            updateStatus();
+        };
+
+        eventSource.onerror = function () {
+            // Reconectar em caso de erro de conexão
+            setTimeout(connectToServerEvents, 2000);
+        };
+    };
+
+    connectToServerEvents();
 });
