@@ -43,7 +43,7 @@ $(document).ready(function () {
     const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
     const connectToServerEvents = function () {
-        const eventSource = new EventSource('/status-stream');
+        const eventSource = new EventSource('/status');
 
         eventSource.onmessage = function (event) {
             const data = JSON.parse(event.data);
