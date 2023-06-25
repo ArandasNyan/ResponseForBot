@@ -1,6 +1,21 @@
 fetch('https://cherrybot.arandas.repl.co/status')
     .then(response => response.json())
     .then(data => {
+        let status = data.status || '';
+        const bodyElement = document.body;
+        const statusElement = document.getElementById('status');
+
+        if (status === '') {
+            bodyElement.classList.remove('error', 'success');
+            bodyElement.classList.add('pending');
+        } else if (status === 'Operacional!') {
+            bodyElement.classList.remove('error', 'pending');
+            bodyElement.classList.add('success');
+        } else {
+            bodyElement.classList.remove('pending', 'success');
+            bodyElement.classList.add('error');
+        }
+
         const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
         let currentIndex = 0; // Índice atual do item a ser exibido
 
@@ -16,21 +31,8 @@ fetch('https://cherrybot.arandas.repl.co/status')
         // Define o intervalo de tempo desejado (em milissegundos)
         const intervalo = 500; // 5 segundos
 
-        const status = data.status || setInterval(exibirProximoItem, intervalo);
-        const bodyElement = document.body;
-        const statusElement = document.getElementById('status');
+        status = setInterval(exibirProximoItem, intervalo);
         statusElement.textContent = status;
-
-        if (status === '') {
-            bodyElement.classList.remove('error', 'success');
-            bodyElement.classList.add('pending');
-        } else if (status === 'Operacional!') {
-            bodyElement.classList.remove('error', 'pending');
-            bodyElement.classList.add('success');
-        } else {
-            bodyElement.classList.remove('pending', 'success');
-            bodyElement.classList.add('error');
-        }
     })
     .catch(error => {
         const bodyElement = document.body;
