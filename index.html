@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./styles.css">
+        <title>CherryBot</title>
+    </head>
+    <body class="error">
+        <div class="container">
+            <h1>CherryBot "Twitch"</h1>
+            <div class="ping-status">
+                <div class="pulse-container">
+                    <span class="pulse-marker"></span>
+                    <a href="#" class="pulse dark"></a>
+                </div>
+                <p>Status: <span id="status">Operacional</span></p>
+            </div>
+        </div>
+        <!--<script>
+                // Faz uma requisição AJAX para obter o status do servidor
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/status', true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var statusElement = document.getElementById('status');
+                        var response = JSON.parse(xhr.responseText);
+                        statusElement.textContent = `Status: ${response.status}`;
+                    }
+                };
+                xhr.send();
+            </script>-->
+        <script>
+            fetch('https://cherrybot.arandas.repl.co/status')
+            .then(response => response.json())
+            .then(data => {
+                const status = data.status || 'Pendente';
+                const statusElement = document.getElementById('status');
+                statusElement.textContent = status;
+            })
+            .catch(error => {
+                const statusElement = document.getElementById('status');
+                statusElement.textContent = 'Não Operacional';
+                console.error(error);
+            });
+        </script>
+    </body>
+</html>
