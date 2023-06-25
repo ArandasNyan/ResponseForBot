@@ -20,7 +20,7 @@ fetch('https://cherrybot.arandas.repl.co/status')
     .catch(error => {
         const bodyElement = document.body;
         const statusElement = document.getElementById('status');
-        statusElement.textContent = 'Não Operacional';
+        statusElement.textContent = 'Não Operacional!';
         bodyElement.classList.remove('pending', 'success');
         bodyElement.classList.add('error');
         console.error(error);
