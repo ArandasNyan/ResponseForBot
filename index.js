@@ -1,7 +1,22 @@
 fetch('https://cherrybot.arandas.repl.co/status')
     .then(response => response.json())
     .then(data => {
-        const status = data.status || '';
+        const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
+        let currentIndex = 0; // Índice atual do item a ser exibido
+
+        function exibirProximoItem() {
+            // Atualiza o conteúdo do elemento HTML com o item atual
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = array[currentIndex];
+
+            // Incrementa o índice para exibir o próximo item
+            currentIndex = (currentIndex + 1) % array.length;
+        }
+
+        // Define o intervalo de tempo desejado (em milissegundos)
+        const intervalo = 500; // 5 segundos
+
+        const status = data.status || setInterval(exibirProximoItem, intervalo);
         const bodyElement = document.body;
         const statusElement = document.getElementById('status');
         statusElement.textContent = status;
