@@ -26,6 +26,7 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://cherrybot.arandas.repl.co/status',
             dataType: 'json',
+            timeout: 500,
             success: function (data) {
                 status = data.status || '';
                 updateStatus();
@@ -34,13 +35,12 @@ $(document).ready(function () {
                 status = '';
                 updateStatus();
                 console.error(error);
+            },
+            complete: function () {
+                setTimeout(fetchData, 500); // Chama novamente após 500 milissegundos
             }
         });
     };
-
-    const intervaloAtualizacao = 5 * 1000; // 5 segundos
-
-    const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
     const connectToServerEvents = function () {
         const eventSource = new EventSource('https://cherrybot.arandas.repl.co/status-stream');
@@ -58,5 +58,6 @@ $(document).ready(function () {
         };
     };
 
+    fetchData(); // Inicia a busca imediatamente
     connectToServerEvents();
 });
