@@ -35,7 +35,7 @@ $(document).ready(function () {
                 status = '';
                 updateStatus();
                 console.error(error);
-                setTimeout(fetchData, 100); // Chama novamente após o tempo definido
+                setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após o tempo definido
             }
         });
     };
