@@ -10,7 +10,7 @@ $(document).ready(function () {
         if (status === '') {
             bodyElement.removeClass('error success').addClass('pending');
             statusElement.text(array[arrayIndex]);
-            arrayIndex = (arrayIndex + 1);
+            arrayIndex = arrayIndex++;
         } else if (status === 'Inoperante') {
             bodyElement.removeClass('success pending').addClass('error');
             statusElement.text('Inoperante!');
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
         eventSource.onerror = function () {
             // Reconectar em caso de erro de conexão
-            setTimeout(connectToServerEvents, 10);
+            setTimeout(connectToServerEvents, 1);
         };
     };
 
