@@ -13,7 +13,7 @@ $(document).ready(function () {
             arrayIndex = (arrayIndex + 1);
         } else if (status === 'Inoperante') {
             bodyElement.removeClass('success pending').addClass('error');
-            statusElement.text('Não Operacional!');
+            statusElement.text('Inoperante!');
             clearInterval(intervaloArray);
         } else {
             bodyElement.removeClass('pending error').addClass('success');
