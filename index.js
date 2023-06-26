@@ -1,42 +1,51 @@
 $(document).ready(function () {
+    let arrayIndex = 0;
     const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
     let status = '';
-    let arrayIndex = 0;
-    let timeoutID = null;
-    const velocidadeMaxima = 100;
+    let temporizadorDeVelocidade = 500;
 
     const updateStatus = function () {
         const bodyElement = $('body');
         const statusElement = $('#status');
 
         if (status === '') {
-            bodyElement.attr('class', 'pending');
+            bodyElement.removeClass('error success').addClass('pending');
             statusElement.text(array[arrayIndex]);
             arrayIndex = (arrayIndex + 1) % array.length;
         } else if (status === 'Inoperante') {
-            bodyElement.attr('class', 'error');
+            bodyElement.removeClass('success pending').addClass('error');
             statusElement.text('inoperante!');
         } else {
-            bodyElement.attr('class', 'success');
+            bodyElement.removeClass('pending error').addClass('success');
             statusElement.text('Operacional!');
         }
     };
 
     const fetchData = function () {
+        const startTime = Date.now(); // Registrar o tempo de início da requisição
+
         $.ajax({
             url: 'https://cherrybot.arandas.repl.co/status',
             dataType: 'json',
-            timeout: velocidadeMaxima,
+            timeout: 100, // Definir o tempo máximo de espera como 100ms
             success: function (data) {
-                status = data.status || '';
-                updateStatus();
-                timeoutID = setTimeout(fetchData, velocidadeMaxima);
+                const endTime = Date.now(); // Registrar o tempo de fim da requisição
+                const elapsed = endTime - startTime; // Calcular o tempo decorrido em milissegundos
+
+                if (elapsed <= 100) {
+                    status = data.status || '';
+                    updateStatus();
+                }
+
+                const delay = Math.max(0, 100 - elapsed); // Calcular o tempo de espera restante
+
+                setTimeout(fetchData, delay); // Chama novamente após o tempo restante
             },
             error: function (error) {
                 status = '';
                 updateStatus();
                 console.error(error);
-                timeoutID = setTimeout(fetchData, velocidadeMaxima);
+                setTimeout(fetchData, 100); // Chama novamente após o tempo definido (100ms)
             }
         });
     };
@@ -52,10 +61,11 @@ $(document).ready(function () {
         };
 
         eventSource.onerror = function () {
+            // Reconectar em caso de erro de conexão
             setTimeout(connectToServerEvents, 2000);
         };
     };
 
-    fetchData();
+    fetchData(); // Inicia a busca imediatamente
     connectToServerEvents();
 });
