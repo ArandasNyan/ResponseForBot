@@ -1,24 +1,24 @@
 $(document).ready(function () {
-    let arrayIndex = 0;
     const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
     let status = '';
+    let arrayIndex = 0;
+    let timeoutID = null;
+    const velocidadeMaxima = 100;
 
     const updateStatus = function () {
         const bodyElement = $('body');
         const statusElement = $('#status');
 
         if (status === '') {
-            bodyElement.removeClass('error success').addClass('pending');
+            bodyElement.attr('class', 'pending');
             statusElement.text(array[arrayIndex]);
-            arrayIndex = array.length + 1 > 3 ? array.length = 0 : array.length;
+            arrayIndex = (arrayIndex + 1) % array.length;
         } else if (status === 'Inoperante') {
-            bodyElement.removeClass('success pending').addClass('error');
-            statusElement.text('Não Operacional!');
-            clearInterval(intervaloArray);
+            bodyElement.attr('class', 'error');
+            statusElement.text('inoperante!');
         } else {
-            bodyElement.removeClass('pending error').addClass('success');
+            bodyElement.attr('class', 'success');
             statusElement.text('Operacional!');
-            clearInterval(intervaloArray);
         }
     };
 
@@ -26,21 +26,20 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://cherrybot.arandas.repl.co/status',
             dataType: 'json',
+            timeout: velocidadeMaxima,
             success: function (data) {
                 status = data.status || '';
                 updateStatus();
+                timeoutID = setTimeout(fetchData, velocidadeMaxima);
             },
             error: function (error) {
                 status = '';
                 updateStatus();
                 console.error(error);
+                timeoutID = setTimeout(fetchData, velocidadeMaxima);
             }
         });
     };
-
-    const intervaloAtualizacao = 5 * 1000; // 5 segundos
-
-    const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
     const connectToServerEvents = function () {
         const eventSource = new EventSource('https://cherrybot.arandas.repl.co/status-stream');
@@ -53,10 +52,10 @@ $(document).ready(function () {
         };
 
         eventSource.onerror = function () {
-            // Reconectar em caso de erro de conexão
             setTimeout(connectToServerEvents, 2000);
         };
     };
 
+    fetchData();
     connectToServerEvents();
 });
