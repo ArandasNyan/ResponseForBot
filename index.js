@@ -11,13 +11,13 @@ $(document).ready(function () {
             bodyElement.removeClass('error success').addClass('pending');
             statusElement.text(array[arrayIndex]);
             arrayIndex = (arrayIndex + 1) % array.length;
-        } else if (status === 'Inoperante') {
-            bodyElement.removeClass('success pending').addClass('error');
-            statusElement.text('Não Operacional!');
-            clearInterval(intervaloArray);
-        } else {
+        } else if (status === 'Operacional!') {
             bodyElement.removeClass('pending error').addClass('success');
             statusElement.text('Operacional!');
+            clearInterval(intervaloArray);
+        } else {
+            bodyElement.removeClass('success pending').addClass('error');
+            statusElement.text('Não Operacional!');
             clearInterval(intervaloArray);
         }
     };
