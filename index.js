@@ -13,7 +13,7 @@ $(document).ready(function () {
             arrayIndex = (arrayIndex + 1) % array.length;
         } else if (status === 'Inoperante') {
             bodyElement.removeClass('success pending').addClass('error');
-            statusElement.text('Não Operacional!');
+            statusElement.text('inoperante!');
             clearInterval(intervaloArray);
         } else {
             bodyElement.removeClass('pending error').addClass('success');
@@ -37,7 +37,7 @@ $(document).ready(function () {
                 console.error(error);
             },
             complete: function () {
-                setTimeout(fetchData, 1); // Chama novamente após 500 milissegundos
+                setTimeout(fetchData, 10); // Chama novamente após 10 milissegundos
             }
         });
     };
