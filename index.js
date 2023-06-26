@@ -22,30 +22,20 @@ $(document).ready(function () {
     };
 
     const fetchData = function () {
-        const startTime = Date.now(); // Registrar o tempo de início da requisição
-
         $.ajax({
             url: 'https://cherrybot.arandas.repl.co/status',
             dataType: 'json',
-            timeout: 100, // Definir o tempo máximo de espera como 100ms
+            timeout: temporizadorDeVelocidade,
             success: function (data) {
-                const endTime = Date.now(); // Registrar o tempo de fim da requisição
-                const elapsed = endTime - startTime; // Calcular o tempo decorrido em milissegundos
-
-                if (elapsed <= 100) {
-                    status = data.status || '';
-                    updateStatus();
-                }
-
-                const delay = Math.max(0, 100 - elapsed); // Calcular o tempo de espera restante
-
-                setTimeout(fetchData, delay); // Chama novamente após o tempo restante
+                status = data.status || '';
+                updateStatus();
+                setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após o tempo definido
             },
             error: function (error) {
                 status = '';
                 updateStatus();
                 console.error(error);
-                setTimeout(fetchData, 100); // Chama novamente após o tempo definido (100ms)
+                setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após o tempo definido
             }
         });
     };
