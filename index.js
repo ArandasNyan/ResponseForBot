@@ -10,7 +10,7 @@ $(document).ready(function () {
         if (status === '') {
             bodyElement.removeClass('error success').addClass('pending');
             statusElement.text(array[arrayIndex]);
-            arrayIndex = arrayIndex++;
+            arrayIndex = (arrayIndex + 1) % array.length;
         } else if (status === 'Inoperante') {
             bodyElement.removeClass('success pending').addClass('error');
             statusElement.text('Inoperante!');
@@ -38,7 +38,7 @@ $(document).ready(function () {
         });
     };
 
-    const intervaloAtualizacao = 1; // 1ms
+    const intervaloAtualizacao = 5000; // 5 segundos
 
     const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
