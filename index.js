@@ -6,12 +6,11 @@ $(document).ready(function () {
     const updateStatus = function () {
         const bodyElement = $('body');
         const statusElement = $('#status');
-        arrayIndex = 0
 
         if (status === '') {
             bodyElement.removeClass('error success').addClass('pending');
             statusElement.text(array[arrayIndex]);
-            arrayIndex++;
+            arrayIndex = array.length++;
         } else if (status === 'Inoperante') {
             bodyElement.removeClass('success pending').addClass('error');
             statusElement.text('Não Operacional!');
