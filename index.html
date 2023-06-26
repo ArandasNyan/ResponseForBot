@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./styles.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="./index.js" defer></script>
-        <title>CherryBot</title>
+        <title>CherryBot | Status</title>
     </head>
-    <body class="error">
-        <div class="container">
-            <h1>CherryBot "Twitch"</h1>
-            <div class="ping-status">
-                <div class="pulse-container">
-                    <span class="pulse-marker"></span>
-                    <a href="#" class="pulse dark"></a>
+    <body class=" screen-center">
+        <div class="flex itens-center justify-center column">
+            <h1 class="size-32 margin-bottom-10">Status Cherry Bot</h1>
+            <div class="w-23 h-4 flex itens-center justify-evenly radius-8 transparent-02 filter-5">
+                <div class="pulse relative w-10p h-10p radius-50 background-color">
+                    <span class="absolute size-full background-inherit radius-inherit opacity-08 pulse-animation"></span>
                 </div>
-                <p>Status: <span id="status">Não Operacional!</span></p>
+                <p class="size-16 screen-70">
+                    Status: 
+                    <span 
+                        class="size-16 text-color" 
+                        id="status">
+                        Iniciando Busca!
+                    </span>
+                </p>
             </div>
         </div>
     </body>
