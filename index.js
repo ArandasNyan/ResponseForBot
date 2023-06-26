@@ -26,7 +26,7 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://cherrybot.arandas.repl.co/status',
             dataType: 'json',
-            timeout: 500,
+            timeout: 10,
             success: function (data) {
                 status = data.status || '';
                 updateStatus();
@@ -37,7 +37,7 @@ $(document).ready(function () {
                 console.error(error);
             },
             complete: function () {
-                setTimeout(fetchData, 500); // Chama novamente após 500 milissegundos
+                setTimeout(fetchData, 1000); // Chama novamente após 500 milissegundos
             }
         });
     };
