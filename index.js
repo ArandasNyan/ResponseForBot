@@ -1,22 +1,23 @@
 $(document).ready(function () {
-    let arrayIndex = 0;
     const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
     let status = '';
-    let temporizadorDeVelocidade = 500;
+    let arrayIndex = 0;
+    let timeoutID = null;
+    const velocidadeMaxima = 100;
 
     const updateStatus = function () {
         const bodyElement = $('body');
         const statusElement = $('#status');
 
         if (status === '') {
-            bodyElement.removeClass('error success').addClass('pending');
+            bodyElement.attr('class', 'pending');
             statusElement.text(array[arrayIndex]);
             arrayIndex = (arrayIndex + 1) % array.length;
         } else if (status === 'Inoperante') {
-            bodyElement.removeClass('success pending').addClass('error');
+            bodyElement.attr('class', 'error');
             statusElement.text('inoperante!');
         } else {
-            bodyElement.removeClass('pending error').addClass('success');
+            bodyElement.attr('class', 'success');
             statusElement.text('Operacional!');
         }
     };
@@ -25,17 +26,17 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://cherrybot.arandas.repl.co/status',
             dataType: 'json',
-            timeout: temporizadorDeVelocidade,
+            timeout: velocidadeMaxima,
             success: function (data) {
                 status = data.status || '';
                 updateStatus();
-                setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após o tempo definido
+                timeoutID = setTimeout(fetchData, velocidadeMaxima);
             },
             error: function (error) {
                 status = '';
                 updateStatus();
                 console.error(error);
-                setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após o tempo definido
+                timeoutID = setTimeout(fetchData, velocidadeMaxima);
             }
         });
     };
@@ -51,11 +52,11 @@ $(document).ready(function () {
         };
 
         eventSource.onerror = function () {
-            // Reconectar em caso de erro de conexão
             setTimeout(connectToServerEvents, 2000);
         };
     };
 
-    fetchData(); // Inicia a busca imediatamente
+    fetchData();
     connectToServerEvents();
 });
+.
