@@ -3,6 +3,22 @@ $(document).ready(function () {
     const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
     let status = '';
 
+    const fetchData = function () {
+        $.ajax({
+            url: 'https://cherrybot.arandas.repl.co/status',
+            dataType: 'json',
+            success: function (data) {
+                status = data.status || '';
+                updateStatus();
+            },
+            error: function (xhr, status, error) {
+                status = '';
+                updateStatus();
+                console.error(error);
+            }
+        });
+    };
+
     const updateStatus = function () {
         const bodyElement = $('body');
         const statusElement = $('#status');
@@ -20,22 +36,6 @@ $(document).ready(function () {
             statusElement.text('Não Operacional!');
             clearInterval(intervaloArray);
         }
-    };
-
-    const fetchData = function () {
-        $.ajax({
-            url: 'https://cherrybot.arandas.repl.co/status',
-            dataType: 'json',
-            success: function (data) {
-                status = data.status || '';
-                updateStatus();
-            },
-            error: function (xhr, status, error) {
-                status = '';
-                updateStatus();
-                console.error(error);
-            }
-        });
     };
 
     const intervaloAtualizacao = 1000; // 5 segundos
