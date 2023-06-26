@@ -17,7 +17,7 @@ $(document).ready(function () {
             clearInterval(intervaloArray);
         } else {
             bodyElement.removeClass('success pending').addClass('error');
-            statusElement.text('Não Operacional!');
+            statusElement.text('Inoperante!');
             clearInterval(intervaloArray);
         }
     };
