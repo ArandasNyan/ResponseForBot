@@ -35,10 +35,9 @@ $(document).ready(function () {
                 updateStatus();
             },
             error: function (xhr, status, error) {
-                // Evitar a exibição de erros no console
-                // ou na página para usuários externos
                 status = '';
                 updateStatus();
+                console.error(error);
             }
         });
     };
@@ -46,6 +45,22 @@ $(document).ready(function () {
     const intervaloAtualizacao = 5 * 1000; // 5 segundos
 
     const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
+
+    const connectToServerEvents = function () {
+        const eventSource = new EventSource('https://cherrybot.arandas.repl.co/status-stream');
+
+        eventSource.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            const newStatus = data.status || '';
+            status = newStatus;
+            updateStatus();
+        };
+
+        eventSource.onerror = function () {
+            // Reconectar em caso de erro de conexão
+            setTimeout(connectToServerEvents, 2000);
+        };
+    };
 
     connectToServerEvents();
 });
