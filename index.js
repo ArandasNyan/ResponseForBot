@@ -10,7 +10,7 @@ $(document).ready(function () {
         if (status === '') {
             bodyElement.removeClass('error success').addClass('pending');
             statusElement.text(array[arrayIndex]);
-            arrayIndex = array.length++;
+            arrayIndex = (arrayIndex + 1) % array.length;
         } else if (status === 'Inoperante') {
             bodyElement.removeClass('success pending').addClass('error');
             statusElement.text('Não Operacional!');
