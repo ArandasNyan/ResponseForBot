@@ -2,7 +2,6 @@ $(document).ready(function () {
     let arrayIndex = 0;
     const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
     let status = '';
-    let speedTimer = 500;
 
     const updateStatus = function () {
         const bodyElement = $('body');
@@ -14,10 +13,12 @@ $(document).ready(function () {
             arrayIndex = (arrayIndex + 1) % array.length;
         } else if (status === 'Inoperante') {
             bodyElement.removeClass('success pending').addClass('error');
-            statusElement.text('Inoperante!');
+            statusElement.text('Não Operacional!');
+            clearInterval(intervaloArray);
         } else {
             bodyElement.removeClass('pending error').addClass('success');
             statusElement.text('Operacional!');
+            clearInterval(intervaloArray);
         }
     };
 
@@ -25,7 +26,6 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://cherrybot.arandas.repl.co/status',
             dataType: 'json',
-            timeout: speedTimer,
             success: function (data) {
                 status = data.status || '';
                 updateStatus();
@@ -34,12 +34,13 @@ $(document).ready(function () {
                 status = '';
                 updateStatus();
                 console.error(error);
-            },
-            complete: function () {
-                setTimeout(fetchData, speedTimer); // Chama novamente após o tempo definido
             }
         });
     };
+
+    const intervaloAtualizacao = 5 * 1000; // 5 segundos
+
+    const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
     const connectToServerEvents = function () {
         const eventSource = new EventSource('https://cherrybot.arandas.repl.co/status-stream');
@@ -57,6 +58,5 @@ $(document).ready(function () {
         };
     };
 
-    fetchData(); // Inicia a busca imediatamente
     connectToServerEvents();
 });
