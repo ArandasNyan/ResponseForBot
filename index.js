@@ -38,7 +38,7 @@ $(document).ready(function () {
                 console.error(error);
             },
             complete: function () {
-                setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após 10 milissegundos
+                setTimeout(fetchData, 500); // Chama novamente após 10 milissegundos
             }
         });
     };
