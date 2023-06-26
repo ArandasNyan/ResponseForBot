@@ -29,6 +29,9 @@ $(document).ready(function () {
             success: function (data) {
                 status = data.status || '';
                 updateStatus();
+                if (status === 'Operacional') {
+                    return; // Retorna sem agendar a próxima busca se estiver operacional
+                }
                 setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após o tempo definido
             },
             error: function (error) {
