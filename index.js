@@ -2,6 +2,7 @@ $(document).ready(function () {
     let arrayIndex = 0;
     const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
     let status = '';
+    let temporizadorDeVelocidade = 10
 
     const updateStatus = function () {
         const bodyElement = $('body');
@@ -26,7 +27,7 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://cherrybot.arandas.repl.co/status',
             dataType: 'json',
-            timeout: 500,
+            timeout: temporizadorDeVelocidade,
             success: function (data) {
                 status = data.status || '';
                 updateStatus();
@@ -37,7 +38,7 @@ $(document).ready(function () {
                 console.error(error);
             },
             complete: function () {
-                setTimeout(fetchData, 10); // Chama novamente após 10 milissegundos
+                setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após 10 milissegundos
             }
         });
     };
