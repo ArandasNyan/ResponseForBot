@@ -10,7 +10,7 @@ $(document).ready(function () {
         if (status === '') {
             bodyElement.removeClass('error success').addClass('pending');
             statusElement.text(array[arrayIndex]);
-            arrayIndex = (arrayIndex + 1) % array.length;
+            arrayIndex = (arrayIndex + 1);
         } else if (status === 'Inoperante') {
             bodyElement.removeClass('success pending').addClass('error');
             statusElement.text('Não Operacional!');
@@ -38,7 +38,7 @@ $(document).ready(function () {
         });
     };
 
-    const intervaloAtualizacao = 5 * 1000; // 5 segundos
+    const intervaloAtualizacao = 500; // 5 milisegundos
 
     const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
         eventSource.onerror = function () {
             // Reconectar em caso de erro de conexão
-            setTimeout(connectToServerEvents, 2000);
+            setTimeout(connectToServerEvents, 500);
         };
     };
 
