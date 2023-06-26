@@ -38,7 +38,7 @@ $(document).ready(function () {
         });
     };
 
-    const intervaloAtualizacao = 500; // 5 milisegundos
+    const intervaloAtualizacao = 1; // 1ms
 
     const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
         eventSource.onerror = function () {
             // Reconectar em caso de erro de conexão
-            setTimeout(connectToServerEvents, 500);
+            setTimeout(connectToServerEvents, 10);
         };
     };
 
