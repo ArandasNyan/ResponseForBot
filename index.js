@@ -30,7 +30,7 @@ $(document).ready(function () {
                 status = data.status || '';
                 updateStatus();
             },
-            error: function (error) {
+            error: function (xhr, status, error) {
                 status = '';
                 updateStatus();
                 console.error(error);
@@ -38,7 +38,7 @@ $(document).ready(function () {
         });
     };
 
-    const intervaloAtualizacao = 5 * 1000; // 5 segundos
+    const intervaloAtualizacao = 1000; // 5 segundos
 
     const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
