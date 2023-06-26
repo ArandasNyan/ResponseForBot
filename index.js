@@ -1,7 +1,7 @@
 $(document).ready(function () {
     let arrayIndex = 0;
     const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
-    let status = '';
+    let status;
 
     const fetchData = function () {
         $.ajax({
