@@ -2,7 +2,7 @@ $(document).ready(function () {
     let arrayIndex = 0;
     const array = ['Pendente', 'Pendente.', 'Pendente..', 'Pendente...'];
     let status = '';
-    let temporizadorDeVelocidade = 10
+    let temporizadorDeVelocidade = 500;
 
     const updateStatus = function () {
         const bodyElement = $('body');
@@ -15,11 +15,9 @@ $(document).ready(function () {
         } else if (status === 'Inoperante') {
             bodyElement.removeClass('success pending').addClass('error');
             statusElement.text('inoperante!');
-            clearInterval(intervaloArray);
         } else {
             bodyElement.removeClass('pending error').addClass('success');
             statusElement.text('Operacional!');
-            clearInterval(intervaloArray);
         }
     };
 
@@ -31,14 +29,13 @@ $(document).ready(function () {
             success: function (data) {
                 status = data.status || '';
                 updateStatus();
+                setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após o tempo definido
             },
             error: function (error) {
                 status = '';
                 updateStatus();
                 console.error(error);
-            },
-            complete: function () {
-                setTimeout(fetchData, 500); // Chama novamente após 10 milissegundos
+                setTimeout(fetchData, temporizadorDeVelocidade); // Chama novamente após o tempo definido
             }
         });
     };
