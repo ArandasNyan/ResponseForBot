@@ -37,7 +37,7 @@ $(document).ready(function () {
                 console.error(error);
             },
             complete: function () {
-                setTimeout(fetchData, 500); // Chama novamente após 500 milissegundos
+                setTimeout(fetchData, 1); // Chama novamente após 500 milissegundos
             }
         });
     };
