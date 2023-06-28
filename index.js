@@ -42,7 +42,7 @@ $(document).ready(function () {
         });
     };
 
-    const intervaloAtualizacao = 5 * 1000; // 5 segundos
+    const intervaloAtualizacao = 2000; // 5 segundos
 
     const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
