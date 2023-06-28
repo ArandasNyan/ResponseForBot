@@ -15,6 +15,10 @@ $(document).ready(function () {
             bodyElement.removeClass('pending error').addClass('success');
             statusElement.text('Operacional!');
             clearInterval(intervaloArray);
+        } else if (status === 'Inoperante!') {
+            bodyElement.removeClass('success pending').addClass('error');
+            statusElement.text('Inoperante!');
+            clearInterval(intervaloArray);
         } else {
             bodyElement.removeClass('success pending').addClass('error');
             statusElement.text('Inoperante!');
@@ -35,14 +39,14 @@ $(document).ready(function () {
                 updateStatus();
             },
             error: function (xhr, status, error) {
-                status = '';
+                status = 'Inoperante!';
                 updateStatus();
                 console.error(error);
             }
         });
     };
 
-    const intervaloAtualizacao = 5 * 1000; // 5 segundos
+    const intervaloAtualizacao = 1000; // 1 segundos
 
     const intervaloArray = setInterval(fetchData, intervaloAtualizacao);
 
@@ -51,7 +55,7 @@ $(document).ready(function () {
 
         eventSource.onmessage = function (event) {
             const data = JSON.parse(event.data);
-            const newStatus = data.status || '';
+            const newStatus = data.status;
             status = newStatus;
             updateStatus();
         };
